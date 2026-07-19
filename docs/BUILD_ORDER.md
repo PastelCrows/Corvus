@@ -6,7 +6,9 @@ need to be "done" before starting the next, but later phases assume earlier
 ones are at least buildable.
 
 - [ ] **Phase 1 — `image/`** — Base image build pipeline: Arch + mkosi +
-      btrfs + firmware/driver bundling + atomic image tooling. *(up next)*
+      btrfs + firmware/driver bundling + atomic image tooling. *(in
+      progress — pipeline authored and config-validated, not yet built or
+      boot-tested; needs a real Arch machine/VM, see `image/README.md`)*
 - [ ] **Phase 2 — `boot/`** — Bootloader + signing setup: systemd-boot,
       Secure Boot.
 - [ ] **Phase 3 — `hardware/`** — Hardware detection pass, broadened for

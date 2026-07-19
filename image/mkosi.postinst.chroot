@@ -1,0 +1,9 @@
+#!/bin/bash
+# Runs inside the image chroot at the end of the build. Enables the core
+# services the base OS needs running by default (SCOPE.md §8, §13) — nothing
+# here should require user interaction, since the image ships pre-configured.
+set -euo pipefail
+
+systemctl enable NetworkManager.service
+systemctl enable systemd-resolved.service
+systemctl enable systemd-boot-update.service
