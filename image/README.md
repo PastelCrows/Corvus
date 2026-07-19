@@ -49,10 +49,17 @@ producing the image itself.
 - `nvidia-open-dkms` compiles against `linux-headers` at build time; worth
   confirming DKMS build time is acceptable per image build, or whether to
   pin/cache built modules.
-- `mkosi.repart/20-root.conf`'s `Subvolumes=` directive needs
-  `systemd-repart >= 255` on the build host — unverified here, confirm on
-  the real build machine.
+- **Initrd is oversized (~565M UKI) because it's generic (hostonly=no) and
+  bundles firmware for effectively every driver.** GPU/wifi/audio firmware
+  doesn't need to be in the initrd — it loads on-demand from the real root
+  after root is mounted, well past the point the initrd's job is done. Only
+  storage/console drivers actually need to be there. `10-esp.conf` is sized
+  generously (1024M) to unblock building in the meantime; the real fix is
+  constraining what dracut/mkosi's initrd builder pulls in (worth revisiting
+  alongside Phase 3's hardware detection work, since it's the same "what
+  needs to be available at which boot stage" question).
 - No image/package signing yet (Phase 2, `boot/`).
 
-Status: pipeline authored and config-validated; not yet built or boot-tested
-on real hardware/VM.
+Status: pipeline built successfully partway through on a real Arch VM;
+iterating on real build errors as they surface (host tool gaps → tools tree,
+repart config syntax, ESP sizing). Not yet a confirmed successful boot.
