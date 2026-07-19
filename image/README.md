@@ -60,6 +60,20 @@ producing the image itself.
   needs to be available at which boot stage" question).
 - No image/package signing yet (Phase 2, `boot/`).
 
-Status: pipeline built successfully partway through on a real Arch VM;
-iterating on real build errors as they surface (host tool gaps → tools tree,
-repart config syntax, ESP sizing). Not yet a confirmed successful boot.
+Status (as of last session): build succeeds end-to-end. Boot-testing via
+`mkosi vm --console=interactive` gets past firmware and finds/loads the
+bootloader (the `CopyFiles=/efi:/` fix in `mkosi.repart/10-esp.conf` was the
+real fix for the earlier "no bootable option" failure). Currently blocked on
+`Out of resources` when firmware tries to load the ~565M UKI into the VM's
+default 2G RAM — next thing to try is `--ram=8G` on the `mkosi vm` command
+line (cheap, no rebuild needed) to confirm that's really the cause before
+deciding whether to just give the test VM more RAM permanently or finally
+fix the oversized-initrd root cause above. Soft-lockup watchdog spam during
+slow boots is likely a symptom of the same memory pressure, not a separate
+issue — `nowatchdog` in `30-kernel.conf` alone didn't stop it.
+
+Useful for next time: no `/dev/kvm` in the test VM (nested virt greyed out
+in VirtualBox, likely Hyper-V on the Windows host claiming VT-x), so boot
+tests run under slow software emulation. In `--console=interactive` mode
+(the default), exit a stuck/slow boot with **Ctrl+A then X** — this reliably
+works, unlike the graphical-mode Ctrl+Alt+2 monitor escape, which never did.
