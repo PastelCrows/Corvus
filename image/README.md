@@ -35,7 +35,7 @@ On that machine, with `mkosi` installed and running as root:
 
 ```sh
 cd image
-mkosi build       # builds mkosi.output/corvus.raw.zst
+mkosi build       # builds mkosi.output/corvus.raw
 mkosi qemu        # boots the built image in QEMU to sanity-check it
 ```
 
