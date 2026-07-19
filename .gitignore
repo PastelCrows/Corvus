@@ -1,0 +1,15 @@
+# mkosi build output
+image/mkosi.output/
+image/mkosi.builddir/
+image/mkosi.cache/
+*.img
+*.qcow2
+
+# secure boot signing material — never commit keys
+*.key
+*.pem
+!**/*.pub.pem
+
+# editor/OS cruft
+.DS_Store
+*.swp
